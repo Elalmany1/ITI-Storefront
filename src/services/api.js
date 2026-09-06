@@ -1,0 +1,3 @@
+const BASE=(import.meta.env.VITE_API_BASE_URL||'http://localhost:3000/api').replace(/\/$/,'');
+async function request(path,options={}){const r=await fetch(`${BASE}${path}`,{headers:{'Content-Type':'application/json',...(options.headers||{})},...options});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||'Request failed');return data;}
+export const api={categories:()=>request('/categories'),products:(params={})=>request(`/products?${new URLSearchParams(params)}`),product:(id)=>request(`/products/${id}`),orders:()=>request('/orders'),order:(payload)=>request('/orders',{method:'POST',body:JSON.stringify(payload)})};
